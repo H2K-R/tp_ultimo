@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú y Configuraciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background-color: #333;
+        }
+        .menu li {
+            display: inline;
+            margin-right: 15px;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+        .menu a:hover {
+            background-color: #555;
+        }
+        .menu .active {
+            background-color: #4CAF50; 
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="password"] {
+            padding: 8px;
+            width: 100%;
+            max-width: 300px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<ul class="menu">
+    <li><a href="#" class="active">Inicio</a></li>
+    <li><a href="#config">Configuraciones</a></li>
+    <li><a href="#">Logs</a></li>
+    <li><a href="#">Cerrar Sesión</a></li>
+</ul>
+
+<div class="form-container" id="config">
+    <h2>Cambiar Contraseña</h2>
+    <form action="#" method="post">
+        <label for="old-password">Contraseña Actual:</label>
+        <input type="password" id="old-password" name="old-password" required>
+
+        <label for="new-password">Nueva Contraseña:</label>
+        <input type="password" id="new-password" name="new-password" required>
+
+        <label for="confirm-password">Confirmar Nueva Contraseña:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <button type="submit">Cambiar Contraseña</button>
+    </form>
+</div>
+</body>
+</html>

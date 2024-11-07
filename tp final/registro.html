@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión y Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Registro</h1>
+    <form id="registerForm">
+        <label for="registerUsername">Usuario:</label>
+        <input type="text" id="registerUsername" required>
+        <br>
+        <label for="registerPassword">Contraseña:</label>
+        <input type="password" id="registerPassword" required>
+        <br>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h1>Inicio de Sesión</h1>
+    <form id="loginForm">
+        <label for="loginUsername">Usuario:</label>
+        <input type="text" id="loginUsername" required>
+        <br>
+        <label for="loginPassword">Contraseña:</label>
+        <input type="password" id="loginPassword" required>
+        <br>
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <script>
+        const users = {};
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (users[username]) {
+                alert('El usuario ya existe.');
+            } else {
+                users[username] = password;
+                alert('Registro exitoso. Ahora puedes iniciar sesión.');
+                this.reset();
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (users[username] && users[username] === password) {
+                alert('Inicio de sesión exitoso. Bienvenido!');
+                window.location.href = 'menu.html'; 
+            } else {
+                alert('Usuario o contraseña incorrectos.');
+            }
+        });
+    </script>
+
+</body>
+</html>

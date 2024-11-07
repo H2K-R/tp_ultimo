@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Responsabilidades</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 20px;
+        }
+        .status {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Proyectos</h1>
+    <div class="mb-3">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createProjectModal">Crear Nuevo Proyecto</button>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Proyecto</th>
+                <th>Responsable</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="projectTableBody">
+            <tr>
+                <td>Proyecto A</td>
+                <td>Juan Pérez</td>
+                <td><span class="status" onclick="verEstado('Proyecto A')">En progreso</span></td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editarProyecto('Proyecto A')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarProyecto('Proyecto A')">Eliminar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Proyecto B</td>
+                <td>María López</td>
+                <td><span class="status" onclick="verEstado('Proyecto B')">Completado</span></td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editarProyecto('Proyecto B')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarProyecto('Proyecto B')">Eliminar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Proyecto C</td>
+                <td>Carlos García</td>
+                <td><span class="status" onclick="verEstado('Proyecto C')">Pendiente</span></td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editarProyecto('Proyecto C')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarProyecto('Proyecto C')">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createProjectModalLabel">Crear Nuevo Proyecto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createProjectForm">
+                    <div class="form-group">
+                        <label for="projectName">Nombre del Proyecto</label>
+                        <input type="text" class="form-control" id="projectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectOwner">Responsable</label>
+                        <input type="text" class="form-control" id="projectOwner" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectStatus">Estado</label>
+                        <select class="form-control" id="projectStatus">
+                            <option>En progreso</option>
+                            <option>Completado</option>
+                            <option>Pendiente</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="agregarProyecto()">Guardar Proyecto</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function verEstado(proyecto) {
+        const estado = document.querySelector(`tr:has(td:contains("${proyecto}")) td:nth-child(3)`).innerText;
+        alert('Estado del ' + proyecto + ': ' + estado);
+    }
+    function editarProyecto(proyecto) {
+    const newOwner = prompt("Ingrese el nuevo responsable para " + proyecto + ":");
+    if (newOwner) {
+        const filas = document.querySelectorAll("tr");
+        filas.forEach(fila => {
+            const celdas = fila.getElementsByTagName("td");
+            for (let i = 0; i < celdas.length; i++) {
+                if (celdas[i].textContent === proyecto) {
+                    celdas[1].innerText = newOwner;
+                    return; 
+                }
+            }
+        });
+    }
+}
+
+    function eliminarProyecto(proyecto) {
+    if (confirm("¿Estás seguro de que quieres eliminar " + proyecto + "?")) {
+        const filas = document.querySelectorAll("tr");
+        filas.forEach(fila => { 
+            const celdas = fila.getElementsByTagName("td");
+            for (let celda of celdas) {
+                if (celda.textContent === proyecto) {
+                    fila.parentNode.removeChild(fila);
+                    return; 
+                }
+            }
+        });
+    }
+}
+
+    function agregarProyecto() {
+        const projectName = document.getElementById('projectName').value;
+        const projectOwner = document.getElementById('projectOwner').value;
+        const projectStatus = document.getElementById('projectStatus').value;
+
+        const tableBody = document.getElementById('projectTableBody');
+        const newRow = tableBody.insertRow();
+
+        newRow.innerHTML = `
+            <td>${projectName}</td>
+            <td>${projectOwner}</td>
+            <td><span class="status" onclick="verEstado('${projectName}')">${projectStatus}</span></td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="editarProyecto('${projectName}')">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="eliminarProyecto('${projectName}')">Eliminar</button>
+            </td>
+        `;
+
+        $('#createProjectModal').modal('hide');
+        document.getElementById('createProjectForm').reset();
+    }
+    fetch('obtener_proyectos.php')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('projectTableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach(proyecto => {
+                const newRow = tableBody.insertRow();
+                newRow.innerHTML = `
+                    <td>${proyecto.nombre}</td>
+                    <td>${proyecto.responsable}</td>
+                    <td><span class="status" onclick="verEstado('${proyecto.nombre}')">${proyecto.estado}</span></td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editarProyecto('${proyecto.nombre}')">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="eliminarProyecto('${proyecto.nombre}')">Eliminar</button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => console.error('Error:', error));
+</script>
+</body>
+</html>
